@@ -1,4 +1,6 @@
-# Assignment Information
+# Customer Account Creation
+
+## Assignment Information
 
 This assignment has been implemented using three main microservices:
 1. CustomerService: Used for creating customers and retrieving information about them
