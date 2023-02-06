@@ -1,0 +1,114 @@
+openapi: 3.0.2
+
+info:
+  title: Transaction Service API
+  version: 1.0.0
+
+paths:
+
+  /transaction/createTransaction:
+    post:
+      summary: Make a transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequestBody'
+      responses:
+        200:
+          description: OK
+        default:
+          $ref: "#/components/schemas/TransactionServiceError"
+
+  /transaction/retrieveTransactionsByCustomerId/{customerId}:
+    get:
+      summary: Retrieve a customer by ID
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/CustomerID'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponseBody'
+        default:
+          $ref: "#/components/schemas/TransactionServiceError"
+
+components:
+  schemas:
+    TransactionServiceError:
+      properties:
+        message:
+          type: string
+          description: >
+            Error message with details about the error.
+
+    TransactionRequestBody:
+      type: object
+      required:
+        - accountId
+        - customerId
+        - amount
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountID'
+        amount:
+          description: "Transaction Amount"
+          type: string
+        customerId:
+          $ref: '#/components/schemas/CustomerID'
+
+    TransactionResponseBody:
+      type: object
+      required:
+        - transactions
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
+
+    TransactionResponse:
+      type: object
+      required:
+        - transactionId
+        - accountId
+        - customerId
+        - amount
+        - date
+      properties:
+        transactionId:
+          $ref: '#/components/schemas/TransactionID'
+          type: string
+        accountId:
+          $ref: '#/components/schemas/AccountID'
+        amount:
+          description: "Transaction Amount"
+          type: string
+        customerId:
+          $ref: '#/components/schemas/CustomerID'
+        date:
+          description: "Date of the transaction"
+          type: string
+          format: date-time
+
+    CustomerID:
+      type: integer
+      format: int64
+      description: "Unique ID of the customer"
+
+    TransactionID:
+      type: integer
+      format: int64
+      description: "Unique ID of the transaction"
+
+    AccountID:
+      type: integer
+      format: int64
+      description: "Unique ID of the account"
