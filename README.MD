@@ -41,3 +41,5 @@ Custom scripts are provided for each endpoint to test them with parameters. The 
 - `createAccount.sh`: Creates a new account
 - `getCustomerDetailedInfo.sh`: Retrieves information about a customer, including their balance and transaction details
 - `getCustomerBasicInfo.sh`: Retrieves basic information about a customer
+
+`If you would like to use curl requests, then the api gateway runs on 8080. so http://localhost:8080/ followed by paths for the respective applications as mentioned in the swagger should work.`
