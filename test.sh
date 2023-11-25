@@ -16,16 +16,24 @@ options=(
     ["3"]="producer=https://producer.example.com"
 )
 
-# Display the menu
+# Filter out options that are already present in config.txt
+for selected_option in $(echo "$selected_options" | tr ',' ' '); do
+    unset "options[$selected_option]"
+done
+
+# Display only the names to the user
+echo "Select an option:"
 for i in "${!options[@]}"; do
-    echo "$i. ${options[$i]}"
+    IFS='=' read -ra option_parts <<< "${options[$i]}"
+    name=${option_parts[0]}
+    echo "$i. $name"
 done
 
 # Get user input
 read -p "Enter your choice(s) separated by commas: " user_choices
 
 # Save the user's selection to the config file
-echo "$user_choices" > "$config_file"
+echo "$selected_options,$user_choices" > "$config_file"
 
 # Process the user's choices dynamically
 IFS=',' read -ra choices_array <<< "$user_choices"
