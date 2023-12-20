@@ -71,3 +71,48 @@ for choice in "${choices_array[@]}"; do
     # Call update.sh with arguments for each selected option
     ./update.sh "$choice" "$url"
 done
+
+
+
+
+
+#!/bin/bash
+
+# Declare options array
+options=(
+    "Infra=$infra_br"
+    "Deploy=$deploy_br"
+    "Producer=$pr_br"
+    "Consumer=$cs_br"
+    "Csm=$csm_br"
+)
+
+# Function to process and invoke ./update.sh
+process_option() {
+    local option="$1"
+
+    # Iterate through options array
+    for opt in "${options[@]}"; do
+        # Extract option and corresponding value
+        opt_name=$(echo "$opt" | cut -d '=' -f 1)
+        opt_value=$(echo "$opt" | cut -d '=' -f 2)
+
+        # If the option matches, invoke ./update.sh
+        if [ "$option" == "$opt_name" ]; then
+            echo "./update.sh $option $opt_value"
+            # Uncomment the line below to actually invoke ./update.sh
+            # ./update.sh "$option" "$opt_value"
+        fi
+    done
+}
+
+# Read the file with delimited text
+input_file="config.txt"
+
+while IFS='|' read -r -a options_array; do
+    # Process each option in the array
+    for option in "${options_array[@]}"; do
+        process_option "$option"
+    done
+done < "$input_file"
+
